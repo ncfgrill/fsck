@@ -1,7 +1,4 @@
 Author: Nathaniel Grill
-CS Login: nathaniel
-
-P5 - File System Checker
 
 This xv6 file system checker performs the following checks when provided a file
 system image:
