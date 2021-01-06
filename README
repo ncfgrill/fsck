@@ -1,0 +1,40 @@
+Author: Nathaniel Grill
+CS Login: nathaniel
+
+P5 - File System Checker
+
+This xv6 file system checker performs the following checks when provided a file
+system image:
+    -each inode is unallocated or a valid type
+    -each address used by a valid inode points to a datablock within the image
+    -root directory exists, is properly numbered, and points to itself
+    -each directory contains a . and .. entry, with . pointing to itself
+    -each address used by a valid inode is marked in-use in the bitmap
+    -each block marked in-use in the bitmap is actually in use somewhere
+    -each direct address is only used once
+    -each indirect address is only used once
+    -each inode marked in-use is referred to in at least one directory
+    -each inode referred to in a valid directory is actually marked in use
+    -reference counts for regular files = number of times file is referred to
+    -each directory only appears in one other directory
+
+Additionally, the following extra checks are performed as well:
+    -each .. entry in a directory refers to the proper parent node
+    -there are no loops in the directory tree
+
+Finally, the file system checker will repair an image that contains lost inodes
+  (i.e. an inode is marked in-use but not found in a directory). Each lost inode
+  is placed in a lost and found directory (titled lost_found). An image will
+  only be repaired if the '-r' flag is specified. Any other flag will cause the
+  checker to exit without doing anything.
+
+Implementing the checker generally involved looping through different aspects of
+  the file system (inodes, directories, datablocks, etc.), performing multiple
+  checks on each part.
+
+Overall, this impementation could be vastly more efficient, particularly with
+  checks 6-8, which each loop through all inodes. On the contrary, checks 1-5
+  and 9-12 are performed, respectively, on an individual inode before moving on
+  to the next one. Efficiency could perhaps also be found by using data
+  structures with faster lookups (e.g. hash tables) rather than looping through
+  lists.
